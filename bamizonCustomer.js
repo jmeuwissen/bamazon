@@ -43,18 +43,17 @@ function showItems() {
         res.forEach(RDP => {
             itemsString += `
 
-Name: ${RDP.product_name},   Product ID: ${RDP.id}  Price: $${RDP.price}
+Name: ${RDP.product_name}   Product ID: ${RDP.id}  Price: $${RDP.price}
             `
         });
-        //IS THIS CHEATING? IT LOOKS SO NICE
-        console.table(res);
+
         console.log(itemsString);
-        // purchase(res);
-        connection.end();
+        selectItem();
+
     })
 }
 
-function purchase() {
+function selectItem() {
     inquirer.prompt(
         [{
                 name: 'item',
@@ -67,9 +66,49 @@ function purchase() {
                 type: 'input'
             }
         ]
-    ).then(function (err, res) {
-        if (err) throw err;
-
+    ).then(function (res) {
+        // if (err) throw err;
+        checkStock(res.item, parseInt(res.quantity));
 
     })
+}
+
+function checkStock(item, quantity) {
+    console.log('checking stock for ' + item)
+    connection.query('SELECT stock_quantity, price FROM products WHERE ?', {
+        product_name: item
+    }, function (err, res) {
+        if (err) throw err;
+        const currStock = res[0][SCHEMA.STOCK_QUANTITY]
+        console.log('removing ' + quantity + ' from ' + currStock +
+            ' ' + item + 's remaining')
+        if (currStock > parseInt(quantity)) {
+            updateStock(item, quantity, currStock, res[0][SCHEMA.PRICE]);
+        } else {
+            console.log('Insufficient Stock!');
+            connection.end()
+        }
+
+        console.log(res);
+
+    })
+}
+
+function updateStock(item, quantity, currStock, price) {
+    console.log('updating stock for ' + item);
+    const newStock = currStock - quantity;
+    connection.query("UPDATE products SET ? WHERE ?",
+        [{
+                stock_quantity: newStock
+            },
+            {
+                product_name: item
+            }
+        ],
+        function (err) {
+            if (err) throw err;
+            console.log('purchasing ' + quantity + ' ' + item + 
+            ' for a total of $' + quantity*price);
+            connection.end();
+        })
 }
