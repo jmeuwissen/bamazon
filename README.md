@@ -13,7 +13,7 @@ The purpose of this app is to allow a "customer" to purchase an item from our da
 
 ## Technology
 
-    * MySQL
+  * MySQL
 
 ## Implementation
 
