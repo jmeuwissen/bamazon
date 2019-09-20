@@ -9,11 +9,13 @@ The purpose of this app is to allow a "customer" to purchase an item from our da
 
 ## Usage
 
-
+databse is printed to the console, 
 
 ## Technology
 
   * [MySQL](https://www.npmjs.com/package/mysql)
+  
+  * [Inquirer.js](https://www.npmjs.com/package/inquirer)
 
 ## Implementation
 
