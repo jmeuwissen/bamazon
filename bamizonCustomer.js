@@ -42,7 +42,6 @@ function showItems() {
         if (err) throw err;
         res.forEach(RDP => {
             itemsString += `
-
 Name: ${RDP.product_name}   Product ID: ${RDP.id}  Price: $${RDP.price}
             `
         });
@@ -74,14 +73,14 @@ function selectItem() {
 }
 
 function checkStock(item, quantity) {
-    console.log('checking stock for ' + item)
+    // console.log('checking stock for ' + item)
     connection.query('SELECT stock_quantity, price FROM products WHERE ?', {
         product_name: item
     }, function (err, res) {
         if (err) throw err;
         const currStock = res[0][SCHEMA.STOCK_QUANTITY]
-        console.log('removing ' + quantity + ' from ' + currStock +
-            ' ' + item + 's remaining')
+        // console.log('removing ' + quantity + ' from ' + currStock +
+            // ' ' + item + 's remaining')
         if (currStock > parseInt(quantity)) {
             updateStock(item, quantity, currStock, res[0][SCHEMA.PRICE]);
         } else {
@@ -89,13 +88,13 @@ function checkStock(item, quantity) {
             connection.end()
         }
 
-        console.log(res);
+        // console.log(res);
 
     })
 }
 
 function updateStock(item, quantity, currStock, price) {
-    console.log('updating stock for ' + item);
+    // console.log('updating stock for ' + item);
     const newStock = currStock - quantity;
     connection.query("UPDATE products SET ? WHERE ?",
         [{
