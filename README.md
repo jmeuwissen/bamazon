@@ -9,12 +9,14 @@ The purpose of this app is to allow a "customer" to purchase an item from our da
 
 ## Usage
 
-databse is printed to the console, 
+database is printed to the console, then user decides what item to buy and what quantity of that item. If the user tries to buy more than what's in stock, the transaction is cancelled. otherwise, the database is updated
+
+![usage](/assets/images/usage.PNG)
 
 ## Technology
 
   * [MySQL](https://www.npmjs.com/package/mysql)
-  
+
   * [Inquirer.js](https://www.npmjs.com/package/inquirer)
 
 ## Implementation
